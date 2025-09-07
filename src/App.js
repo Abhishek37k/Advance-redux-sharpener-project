@@ -6,12 +6,15 @@ import { sendCartData } from "./store/cart-actions";
 import { useSelector, useDispatch } from "react-redux";
 import Notification from "./components/UI/Notifications";
 import { fetchCartData } from "./store/cart-actions";
+
+
+
 let isInitial = true;
 
 function App() {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
-
+  
   const notification = useSelector((state) => state.ui.notification);
   useEffect(() => {
     dispatch(fetchCartData());
@@ -22,7 +25,10 @@ function App() {
       isInitial = false;
       return;
     }
-    dispatch(sendCartData(cart));
+
+    if (cart.changed) {
+      dispatch(sendCartData(cart));
+    }
   }, [cart, dispatch]);
 
   const showCart = useSelector((state) => state.ui.cartIsVisible);
